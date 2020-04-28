@@ -7,12 +7,12 @@ public class SubscenesLoaderSystem : ComponentSystem
 
     protected override void OnCreate()
     {
-        sceneSystem = World.GetOrCreateSystem<SceneSystem>();
+        //sceneSystem = World.GetOrCreateSystem<SceneSystem>();
     }
 
     protected override void OnUpdate()
     {
-        SubScene[] subscenes = SubsceneLoader.Instance.SubScenes;
+        /*SubScene[] subscenes = SubsceneLoader.Instance.SubScenes;
 
         if (subscenes.Length > 0)
         {
@@ -20,6 +20,6 @@ public class SubscenesLoaderSystem : ComponentSystem
             {
                 sceneSystem.LoadSceneAsync(subScene.SceneGUID);
             }
-        }
+        }*/
     }
 }
