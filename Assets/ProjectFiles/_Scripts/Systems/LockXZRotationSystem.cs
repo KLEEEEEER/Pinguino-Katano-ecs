@@ -1,23 +1,17 @@
 ﻿using UnityEngine;
 using Unity.Entities;
 using Unity.Transforms;
+using Unity.Physics;
 
 public class LockXZRotationSystem : ComponentSystem
 {
-    protected override void OnStartRunning()
-    {
-        base.OnStartRunning();
-
-        Entities.ForEach((ref Rotation rotation, ref LockXZRotationTag lockXZRotation) => {
-            lockXZRotation.InitialRotationValue = rotation.Value;
-        });
-    }
-
     protected override void OnUpdate()
     {
-        /*Entities.ForEach((ref Rotation rotation, ref LockXZRotationTag lockXZRotation) => {
-            rotation.Value.value.x = lockXZRotation.InitialRotationValue.value.x;
-            rotation.Value.value.z = lockXZRotation.InitialRotationValue.value.z;
-        });*/
+        Entities.ForEach((ref PhysicsMass physics, ref LockXZRotationTag lockXZRotation) =>
+        {
+            physics.InverseInertia[0] = lockXZRotation.LockX ? 0 : physics.InverseInertia[0];
+            physics.InverseInertia[1] = lockXZRotation.LockY ? 0 : physics.InverseInertia[1];
+            physics.InverseInertia[2] = lockXZRotation.LockZ ? 0 : physics.InverseInertia[2];
+        });
     }
 }
