@@ -170,10 +170,10 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.001
+  near clip plane: 0.01
   far clip plane: 1000
   field of view: 60
-  orthographic: 1
+  orthographic: 0
   orthographic size: 10.32
   m_Depth: -1
   m_CullingMask:
@@ -742,11 +742,11 @@ MonoBehaviour:
   m_ShapeType: 0
   m_PrimitiveCenter:
     x: 0
-    y: 1
+    y: 0
     z: 0
   m_PrimitiveSize:
     x: 10
-    y: 0
+    y: 2.220446e-16
     z: 10
   m_PrimitiveOrientation:
     Value:
@@ -759,7 +759,7 @@ MonoBehaviour:
     Radius: 5
     Axis: 2
   m_Cylinder:
-    Height: 0
+    Height: 2.220446e-16
     Radius: 5
     Axis: 1
   m_CylinderSideCount: 20
@@ -865,7 +865,7 @@ MonoBehaviour:
     x: 0
     y: 0
     z: 0
-  Speed: 10
+  Speed: 300
   TurnSpeed: 0.1
 --- !u!114 &2117822905
 MonoBehaviour:
@@ -879,10 +879,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f81652c8f3258db4383a7dc4847d785c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  upKey: 273
-  downKey: 274
-  rightKey: 275
-  leftKey: 276
+  upKey: 119
+  downKey: 115
+  rightKey: 100
+  leftKey: 97
 --- !u!4 &2117822906
 Transform:
   m_ObjectHideFlags: 0
@@ -910,7 +910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f376eaa90e61264b96afb161a8cfac9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Force: 100
+  Force: 10
 --- !u!114 &2117822908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -925,8 +925,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_MotionType: 0
   m_Mass: 1
-  m_LinearDamping: 0.01
-  m_AngularDamping: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0
   m_InitialLinearVelocity:
     x: 0
     y: 0
@@ -972,12 +972,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a83777cd2cef5f74081581f31155b94a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  InitialRotationValue:
-    value:
-      x: 0
-      y: 0
-      z: 0
-      w: 0
+  LockX: 1
+  LockY: 0
+  LockZ: 1
 --- !u!114 &2117822910
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1003,7 +1000,7 @@ MonoBehaviour:
     Value:
       x: -90
       y: 0
-      z: -90
+      z: 90
     RotationOrder: 4
   m_Capsule:
     Height: 2
