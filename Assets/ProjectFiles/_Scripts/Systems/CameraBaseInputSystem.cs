@@ -10,14 +10,14 @@ namespace PinguinoKatano.CameraBase
         protected override void OnStartRunning()
         {
             base.OnStartRunning();
-
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            /*Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;*/
         }
 
         protected override void OnUpdate()
         {
             float deltaTime = Time.DeltaTime;
+
             Entities.ForEach((ref CameraBaseInputData inputData) =>
             {
                 inputData.inputX = Input.GetAxisRaw("Mouse X") * deltaTime;
