@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Entities;
+using Unity.Physics;
+using Unity.Physics.Systems;
 
 namespace PinguinoKatano.CameraBase
 {
     public class CameraBaseInputSystem : ComponentSystem
     {
-        protected override void OnStartRunning()
-        {
-            base.OnStartRunning();
-            /*Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;*/
-        }
 
         protected override void OnUpdate()
         {

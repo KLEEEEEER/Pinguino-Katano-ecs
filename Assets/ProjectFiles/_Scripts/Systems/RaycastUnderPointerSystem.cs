@@ -68,11 +68,11 @@ public class RaycastUnderPointerSystem : JobComponentSystem
             if (World.CollisionWorld.CastRay(Input, out var hit))
             {
                 Entity entity = World.Bodies[hit.RigidBodyIndex].Entity;
-                *//*EventQueue.Enqueue(new UnderPointerEvent
+                EventQueue.Enqueue(new UnderPointerEvent
                 {
                     Entity = entity,
                     Hit = hit,
-                });*//*
+                });
             }
         }
     }

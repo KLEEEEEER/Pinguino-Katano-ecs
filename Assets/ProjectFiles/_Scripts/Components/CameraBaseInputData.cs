@@ -10,5 +10,6 @@ namespace PinguinoKatano.CameraBase
     {
         [HideInInspector] public float inputX;
         [HideInInspector] public float inputZ;
+        [HideInInspector] public Vector3 LookPoint;
     }
 }
