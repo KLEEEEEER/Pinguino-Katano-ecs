@@ -11,23 +11,22 @@ public class FaceDirectionSystem : SystemBase
     private BuildPhysicsWorld _buildPhysicsWorldSystem;
     //private EndFramePhysicsSystem _endFramePhysicsSystem;
     public Vector3 mouseHitPosition;
-    Camera mainCamera;
+    Unity.Physics.RaycastHit hit;
 
     protected override void OnStartRunning()
     {
         _buildPhysicsWorldSystem = World.GetExistingSystem<BuildPhysicsWorld>();
         //_endFramePhysicsSystem = World.GetOrCreateSystem<EndFramePhysicsSystem>();
-        mainCamera = Camera.main;
     }
     protected override void OnUpdate()
     {
         //if (mainCamera == null) return;
-        var screenRay = Camera.main.ScreenPointToRay(Input.mousePosition);
+        var screenRay = MonoBehaviourECSBridge.Instance.mainCamera.ScreenPointToRay(Input.mousePosition);
 
         RaycastInput raycastInput = new RaycastInput
         {
             Start = screenRay.origin,
-            End = screenRay.GetPoint(300),
+            End = screenRay.GetPoint(1000),
             Filter = new CollisionFilter
             {
                 BelongsTo = ~0u,
@@ -38,10 +37,13 @@ public class FaceDirectionSystem : SystemBase
 
         Entities.ForEach((ref Rotation rot, in Translation pos, in MovementData moveData) => //  in CameraBaseInputData cameraBaseInputData
         {
-            if (_buildPhysicsWorldSystem.PhysicsWorld.CollisionWorld.CastRay(raycastInput, out var hit))
+            if (_buildPhysicsWorldSystem.PhysicsWorld.CollisionWorld.CastRay(raycastInput, out hit))
             {
-                quaternion targetRotation = quaternion.LookRotation(hit.Position, math.up());
-                rot.Value = math.slerp(rot.Value, targetRotation, moveData.TurnSpeed); //moveData.TurnSpeed
+                var newPosition = hit.Position - pos.Value;
+                newPosition.y = 0;
+
+                quaternion targetRotation = quaternion.LookRotation(newPosition, math.up());
+                rot.Value = math.slerp(rot.Value, targetRotation, moveData.TurnSpeed);
             }
         }).WithoutBurst().Run();
     }
