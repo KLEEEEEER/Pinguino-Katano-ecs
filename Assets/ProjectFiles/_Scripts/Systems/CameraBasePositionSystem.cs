@@ -11,12 +11,6 @@ namespace PinguinoKatano.CameraBase
     {
         private float3 targetPosition;
 
-        /*protected override void OnStartRunning()
-        {
-            base.OnStartRunning();
-
-        }*/
-
         protected override void OnUpdate()
         {
             float deltaTime = Time.DeltaTime;
@@ -26,15 +20,12 @@ namespace PinguinoKatano.CameraBase
                 targetPosition = position.Position;
             });
 
-            Entities.ForEach((ref Translation position, ref CameraBasePositionData positionData, ref CameraBaseOffsetData offsetData) =>
-            {
-                var newPosition = Vector3.MoveTowards(
-                    position.Value,
-                    targetPosition + offsetData.Value,
-                    positionData.MovementSpeed * deltaTime);
+            var newPosition = Vector3.MoveTowards(
+                    MonoBehaviourECSBridge.Instance.mainCamera.transform.position,
+                    targetPosition + new float3(MonoBehaviourECSBridge.Instance.mainCameraOffset),
+                    10f * deltaTime);
 
-                position.Value = newPosition;
-            });
+            MonoBehaviourECSBridge.Instance.mainCamera.transform.position = newPosition;
         }
     }
 }

@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Transforms;
 using Unity.Mathematics;
 using Unity.Burst;
+using Unity.Physics;
 
 public class PlayerMovementSystem : SystemBase
 {
@@ -11,10 +12,17 @@ public class PlayerMovementSystem : SystemBase
     {
         float deltaTime = Time.DeltaTime;
 
-        Entities.ForEach((ref Translation pos, in MovementData moveData) => 
+        Entities.WithAll<MainPlayerTag>().ForEach((ref PhysicsVelocity velocity, in MovementData moveData) =>
         {
+            float speed = moveData.Speed;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed *= 2;
+            }
+
             float3 normalizedDir = math.normalizesafe(moveData.Direction);
-            pos.Value += normalizedDir * moveData.Speed * deltaTime;
+            velocity.Linear.xz = new float2(normalizedDir.x, normalizedDir.z) * speed * deltaTime;
+            //pos.Value += normalizedDir * moveData.Speed * deltaTime;
         }).Run();
     }
 }
