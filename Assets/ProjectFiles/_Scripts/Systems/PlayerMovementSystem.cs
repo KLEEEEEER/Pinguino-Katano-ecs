@@ -14,8 +14,14 @@ public class PlayerMovementSystem : SystemBase
 
         Entities.WithAll<MainPlayerTag>().ForEach((ref PhysicsVelocity velocity, in MovementData moveData) =>
         {
+            float speed = moveData.Speed;
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                speed *= 2;
+            }
+
             float3 normalizedDir = math.normalizesafe(moveData.Direction);
-            velocity.Linear.xz = new float2(normalizedDir.x, normalizedDir.z) * moveData.Speed * deltaTime;
+            velocity.Linear.xz = new float2(normalizedDir.x, normalizedDir.z) * speed * deltaTime;
             //pos.Value += normalizedDir * moveData.Speed * deltaTime;
         }).Run();
     }
