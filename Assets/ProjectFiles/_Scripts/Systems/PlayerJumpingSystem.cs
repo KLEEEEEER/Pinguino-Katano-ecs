@@ -48,16 +48,8 @@ using Unity.Transforms;
                     GroupIndex = 0
                 }
             };
-            Debug.Log($"Start = {currentPosition}");
-            Debug.Log($"End = {currentPosition + new float3(0, -1f, 0)}");
 
-            if (_buildPhysicsWorldSystem.PhysicsWorld.CollisionWorld.CastRay(raycastInput))
-            {
-                Debug.Log("On the ground!");
-                return true;
-            }
-            Debug.Log("Not on the ground!");
-            return false;
+        return _buildPhysicsWorldSystem.PhysicsWorld.CollisionWorld.CastRay(raycastInput);
         }
     }
 //}
