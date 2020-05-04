@@ -5,6 +5,7 @@ using Unity.Entities;
 using Unity.Jobs;
 using Unity.Physics;
 using Unity.Physics.Systems;
+using Unity.Collections;
 
 namespace PinguinoKatano.Attacking
 {
@@ -22,11 +23,13 @@ namespace PinguinoKatano.Attacking
         {
             public ComponentDataFromEntity<HealthData> healthGroup;
             public ComponentDataFromEntity<AttackDamageData> attackDamageGroup;
+            [ReadOnly]
+            public ComponentDataFromEntity<AttackReadyTag> attackReadyTagGroup;
             public float deltaTime;
             
             public void Execute(TriggerEvent triggerEvent)
             {
-                if (attackDamageGroup.HasComponent(triggerEvent.Entities.EntityA))
+                if (attackDamageGroup.HasComponent(triggerEvent.Entities.EntityA) && attackReadyTagGroup.HasComponent(triggerEvent.Entities.EntityA))
                 {
                     if (healthGroup.HasComponent(triggerEvent.Entities.EntityB))
                     {
@@ -37,7 +40,7 @@ namespace PinguinoKatano.Attacking
                     }
                 }
 
-                if (attackDamageGroup.HasComponent(triggerEvent.Entities.EntityB))
+                if (attackDamageGroup.HasComponent(triggerEvent.Entities.EntityB) && attackReadyTagGroup.HasComponent(triggerEvent.Entities.EntityB))
                 {
                     if (healthGroup.HasComponent(triggerEvent.Entities.EntityA))
                     {
@@ -56,6 +59,7 @@ namespace PinguinoKatano.Attacking
             {
                 healthGroup = GetComponentDataFromEntity<HealthData>(),
                 attackDamageGroup = GetComponentDataFromEntity<AttackDamageData>(),
+                attackReadyTagGroup = GetComponentDataFromEntity<AttackReadyTag>(),
                 deltaTime = Time.DeltaTime
             };
             return damageJob.Schedule(stepPhysicsWorld.Simulation, ref buildPhysicsWorld.PhysicsWorld, inputDeps);

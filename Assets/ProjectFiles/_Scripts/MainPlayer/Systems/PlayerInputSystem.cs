@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using Unity.Entities;
 using System;
+using PinguinoKatano.Attacking;
 
-public class PlayerInputSystem : SystemBase
+public class PlayerInputSystem : ComponentSystem
 {
     protected override void OnUpdate()
     {
-        Entities.ForEach((ref MovementData moveData, in InputData inputData) => 
+        Entities.ForEach((Entity entity, ref MovementData moveData, ref InputData inputData) => 
         {
             bool isRightKeyPressed = Input.GetKey(inputData.rightKey);
             bool isLeftKeyPressed = Input.GetKey(inputData.leftKey);
@@ -18,6 +19,15 @@ public class PlayerInputSystem : SystemBase
             moveData.Direction.z = Convert.ToInt32(isUpKeyPressed);
             moveData.Direction.z -= Convert.ToInt32(isDownKeyPressed);
 
-        }).Run();
+            if (Input.GetKey(KeyCode.Mouse0))
+            {
+                PostUpdateCommands.AddComponent(entity, new AttackReadyTag());
+            }
+            else
+            {
+                PostUpdateCommands.RemoveComponent<AttackReadyTag>(entity);
+            }
+
+        });
     }
 }
