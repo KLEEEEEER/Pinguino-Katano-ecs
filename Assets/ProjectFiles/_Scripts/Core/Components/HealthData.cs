@@ -6,5 +6,6 @@ namespace PinguinoKatano.Attacking
     public struct HealthData : IComponentData
     {
         public float Value;
+        public float MaxHP;
     }
 }

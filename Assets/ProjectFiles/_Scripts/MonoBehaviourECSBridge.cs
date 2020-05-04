@@ -1,11 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MonoBehaviourECSBridge : MonoBehaviour
 {
     public Camera mainCamera;
     public Vector3 mainCameraOffset;
+    public Text SwingSpeedText;
+    public Image EnemyHealth;
 
     #region Singleton
     private static MonoBehaviourECSBridge instanceValue;
@@ -41,5 +44,14 @@ public class MonoBehaviourECSBridge : MonoBehaviour
     }
     #endregion
 
+    public void SetSwingText(string text)
+    {
+        SwingSpeedText.text = text;
+    }
 
+    public void EnemyTakeDamage(float health, float maxHp)
+    {
+        Vector3 tempScale = EnemyHealth.rectTransform.localScale;
+        tempScale.x = health / maxHp;
+    }
 }

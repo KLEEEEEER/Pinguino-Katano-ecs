@@ -8,43 +8,16 @@ using Unity.Physics.Systems;
 
 public class FaceDirectionSystem : SystemBase
 {
-    //private BuildPhysicsWorld _buildPhysicsWorldSystem;
-    //private EndFramePhysicsSystem _endFramePhysicsSystem;
-    //public Vector3 mouseHitPosition;
-    //Unity.Physics.RaycastHit hit;
-
-    protected override void OnStartRunning()
-    {
-        //_buildPhysicsWorldSystem = World.GetExistingSystem<BuildPhysicsWorld>();
-        //_endFramePhysicsSystem = World.GetOrCreateSystem<EndFramePhysicsSystem>();
-    }
     protected override void OnUpdate()
     {
-
-        /*var screenRay = MonoBehaviourECSBridge.Instance.mainCamera.ScreenPointToRay(Input.mousePosition);
-
-        RaycastInput raycastInput = new RaycastInput
-        {
-            Start = screenRay.origin,
-            End = screenRay.GetPoint(1000),
-            Filter = new CollisionFilter
-            {
-                BelongsTo = ~0u,
-                CollidesWith = ~0u,
-                GroupIndex = 0
-            }
-        };*/
+        float deltaTime = Time.DeltaTime;
+        
         Vector3 mousePosition = Input.mousePosition;
 
-        Entities.ForEach((ref Rotation rot, in Translation pos, in MovementData moveData) => //  in CameraBaseInputData cameraBaseInputData
+        Entities.ForEach((ref Rotation rot, ref MovementData moveData, in Translation pos) =>
         {
             Vector3 entityCameraPosition = MonoBehaviourECSBridge.Instance.mainCamera.WorldToScreenPoint(pos.Value);
-            //var newPosition = mousePosition - entityCameraPosition;
-            //newPosition.y = 0;
 
-            //quaternion targetRotation = quaternion.LookRotation(newPosition.normalized, math.up());
-
-            //mousePosition.z = 5.23f;
             mousePosition.x = mousePosition.x - entityCameraPosition.x;
             mousePosition.y = mousePosition.y - entityCameraPosition.y;
             float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
@@ -52,9 +25,13 @@ public class FaceDirectionSystem : SystemBase
 
             quaternion targetRotation = Quaternion.Euler(new Vector3(0, -angle, 0));
 
-
-           // Debug.Log($"newPosition.normalized = {newPosition.normalized}");
-            rot.Value = math.slerp(rot.Value, targetRotation, moveData.TurnSpeed);
+            if (moveData.LastRotationY != 0)
+            {
+                moveData.TurnSpeed = math.abs(rot.Value.value.y - moveData.LastRotationY) * 100f * deltaTime;
+            }
+            moveData.LastRotationY = rot.Value.value.y;
+            MonoBehaviourECSBridge.Instance.SetSwingText(moveData.TurnSpeed.ToString());
+            rot.Value = math.slerp(rot.Value, targetRotation, 1f);
         }).WithoutBurst().Run();
     }
 }
